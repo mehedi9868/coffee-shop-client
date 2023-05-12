@@ -1,8 +1,9 @@
+/* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
-const CoffeeCard = ({ coffee }) => {
+const CoffeeCard = ({ coffee, coffees, setCoffees }) => {
     const { _id, name, chef, supplier, taste, photo } = coffee;
 
     const handleDelete = (id) => {
@@ -22,12 +23,14 @@ const CoffeeCard = ({ coffee }) => {
                     .then(res => res.json())
                     .then(data => {
                         console.log(data);
-                        if (data.deleteCount > 0) {
+                        if (data.deletedCount > 0) {
                             Swal.fire(
                                 'Deleted!',
                                 'Your coffee has been deleted.',
                                 'success'
                             )
+                            const remaining = coffees.filter(coffee => coffee._id !== id);
+                            setCoffees(remaining);
                         }
                     })
             }
